@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserStatus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.user.status</a> &gt; <span class="el_source">UserStatus.java</span></div><h1>UserStatus.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.user.status;
+
+import com.easemob.im.server.api.Context;
+import reactor.core.publisher.Mono;
+
+public class UserStatus {
+
+    private Context context;
+
+<span class="fc" id="L10">    public UserStatus(Context context) {</span>
+<span class="fc" id="L11">        this.context = context;</span>
+<span class="fc" id="L12">    }</span>
+
+    public Mono&lt;Boolean&gt; isUserOnline(String username) {
+<span class="fc" id="L15">        return context.getHttpClient()</span>
+<span class="fc" id="L16">                .flatMap(httpClient -&gt; httpClient.get()</span>
+<span class="fc" id="L17">                        .uri(String.format(&quot;/users/%s/status&quot;, username))</span>
+<span class="fc" id="L18">                        .responseSingle((rsp, buf) -&gt; context.getErrorMapper().apply(rsp).then(buf)))</span>
+<span class="fc" id="L19">                .map(buf -&gt; context.getCodec().decode(buf, UserStatusResponse.class))</span>
+<span class="fc" id="L20">                .map(rsp -&gt; rsp.isUserOnline(username));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

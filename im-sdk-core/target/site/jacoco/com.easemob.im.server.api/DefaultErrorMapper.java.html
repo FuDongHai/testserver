@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultErrorMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api</a> &gt; <span class="el_source">DefaultErrorMapper.java</span></div><h1>DefaultErrorMapper.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api;
+
+import com.easemob.im.server.EMException;
+import com.easemob.im.server.exception.*;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClientResponse;
+
+<span class="fc" id="L9">public class DefaultErrorMapper implements ErrorMapper {</span>
+
+    public Mono&lt;HttpClientResponse&gt; apply(HttpClientResponse response) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (response.status().code() &lt; 400) {</span>
+<span class="fc" id="L13">            return Mono.just(response);</span>
+        }
+<span class="fc" id="L15">        return Mono.error(toException(response));</span>
+    }
+
+    private EMException toException(HttpClientResponse response) {
+<span class="fc" id="L19">        String reason = String.format(&quot;%s %s -&gt; %d %s&quot;, response.method().toString(), response.uri(), response.status().code(), response.status().reasonPhrase());</span>
+<span class="fc" id="L20">        HttpResponseStatus status = response.status();</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (HttpResponseStatus.BAD_REQUEST.equals(status)</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">                || HttpResponseStatus.METHOD_NOT_ALLOWED.equals(status)</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">                || HttpResponseStatus.NOT_ACCEPTABLE.equals(status)</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">                || HttpResponseStatus.UNSUPPORTED_MEDIA_TYPE.equals(status)) {</span>
+<span class="nc" id="L25">            return new EMBadRequestException(reason);</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        } else if (HttpResponseStatus.UNAUTHORIZED.equals(status)) {</span>
+<span class="nc" id="L27">            return new EMUnauthorizedException(reason);</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        } else if (HttpResponseStatus.PAYMENT_REQUIRED.equals(status)</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">                || HttpResponseStatus.FORBIDDEN.equals(status)) {</span>
+<span class="nc" id="L30">            return new EMForbiddenException(reason);</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        } else if (HttpResponseStatus.NOT_FOUND.equals(status)) {</span>
+<span class="fc" id="L32">            return new EMNotFoundException(reason);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        } else if (HttpResponseStatus.TOO_MANY_REQUESTS.equals(status)) {</span>
+<span class="nc" id="L34">            return new EMTooManyRequestsException(reason);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        } else if (HttpResponseStatus.INTERNAL_SERVER_ERROR.equals(status)) {</span>
+<span class="nc" id="L36">            return new EMInternalServerErrorException(reason);</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        } else if (HttpResponseStatus.BAD_GATEWAY.equals(status)) {</span>
+<span class="nc" id="L38">            return new EMBadGatewayException(reason);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        } else if (HttpResponseStatus.SERVICE_UNAVAILABLE.equals(status)) {</span>
+<span class="nc" id="L40">            return new EMServiceUnavailableException(reason);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        } else if (HttpResponseStatus.GATEWAY_TIMEOUT.equals(status)) {</span>
+<span class="nc" id="L42">            return new EMGatewayTimeoutException(reason);</span>
+        }
+<span class="nc" id="L44">        return new EMUnknownException(reason);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

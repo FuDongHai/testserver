@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMBlock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.model</a> &gt; <span class="el_source">EMBlock.java</span></div><h1>EMBlock.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.model;
+
+import java.time.Instant;
+import java.util.Objects;
+
+public class EMBlock {
+
+    private String username;
+
+    private Instant expireAt;
+
+<span class="fc" id="L12">    public EMBlock(String username, Instant expireAt) {</span>
+<span class="fc" id="L13">        this.username = username;</span>
+<span class="fc" id="L14">        this.expireAt = expireAt;</span>
+<span class="fc" id="L15">    }</span>
+
+    public String getUsername() {
+<span class="fc" id="L18">        return this.username;</span>
+    }
+
+    public Instant getExpireAt() {
+<span class="nc" id="L22">        return this.expireAt;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L28" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L29">        EMBlock emBlock = (EMBlock) o;</span>
+<span class="pc bpc" id="L30" title="1 of 4 branches missed.">        return Objects.equals(username, emBlock.username) &amp;&amp; Objects.equals(expireAt, emBlock.expireAt);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L35">        return Objects.hash(username, expireAt);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L40">        return &quot;EMBlock{&quot; +</span>
+                &quot;username='&quot; + username + '\'' +
+                &quot;, expireAt=&quot; + expireAt +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

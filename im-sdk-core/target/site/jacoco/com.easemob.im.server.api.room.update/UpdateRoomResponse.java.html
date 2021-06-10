@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateRoomResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.room.update</a> &gt; <span class="el_source">UpdateRoomResponse.java</span></div><h1>UpdateRoomResponse.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.room.update;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UpdateRoomResponse {
+
+    @JsonProperty(&quot;data&quot;)
+    private Wrapper wrapper;
+
+    public static class Wrapper {
+        @JsonProperty(&quot;description&quot;)
+        private Boolean description;
+        @JsonProperty(&quot;maxusers&quot;)
+        private Boolean maxMembers;
+        @JsonProperty(&quot;groupname&quot;)
+        private Boolean name;
+
+        public Wrapper(@JsonProperty(&quot;description&quot;) Boolean description,
+                       @JsonProperty(&quot;maxusers&quot;) Boolean maxMembers,
+<span class="fc" id="L21">                       @JsonProperty(&quot;groupname&quot;) Boolean name) {</span>
+<span class="fc" id="L22">            this.description = description;</span>
+<span class="fc" id="L23">            this.maxMembers = maxMembers;</span>
+<span class="fc" id="L24">            this.name = name;</span>
+<span class="fc" id="L25">        }</span>
+
+        public Boolean getDescription() {
+<span class="nc" id="L28">            return this.description;</span>
+        }
+
+        public Boolean getMaxMembers() {
+<span class="fc" id="L32">            return this.maxMembers;</span>
+        }
+
+        public Boolean getName() {
+<span class="fc" id="L36">            return this.name;</span>
+        }
+    }
+
+    @JsonCreator
+<span class="fc" id="L41">    public UpdateRoomResponse(@JsonProperty(&quot;data&quot;) Wrapper wrapper) {</span>
+<span class="fc" id="L42">        this.wrapper = wrapper;</span>
+<span class="fc" id="L43">    }</span>
+
+    public boolean nameUpdated() {
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">        return this.wrapper.getName() != null &amp;&amp; this.wrapper.getName();</span>
+    }
+
+    public boolean descriptionUpdated() {
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        return this.wrapper.getDescription() != null &amp;&amp; this.wrapper.getDescription();</span>
+    }
+
+    public boolean maxMembersUpdated() {
+<span class="pc bpc" id="L54" title="2 of 4 branches missed.">        return this.wrapper.getMaxMembers() != null &amp;&amp; this.wrapper.getMaxMembers();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

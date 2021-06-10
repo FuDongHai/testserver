@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MissedMessageCount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.message.missed</a> &gt; <span class="el_source">MissedMessageCount.java</span></div><h1>MissedMessageCount.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.message.missed;
+
+import java.util.Objects;
+
+public class MissedMessageCount {
+
+    private final String queueName;
+
+    private final int messageCount;
+
+<span class="fc" id="L11">    public MissedMessageCount(String queueName, int messageCount) {</span>
+<span class="fc" id="L12">        this.queueName = queueName;</span>
+<span class="fc" id="L13">        this.messageCount = messageCount;</span>
+<span class="fc" id="L14">    }</span>
+
+    public String getQueueName() {
+<span class="nc" id="L17">        return queueName;</span>
+    }
+
+    public int getMessageCount() {
+<span class="nc" id="L21">        return messageCount;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L26">        return &quot;MissedMessageCount{&quot; +</span>
+            &quot;queueName='&quot; + queueName + '\'' +
+            &quot;, messageCount=&quot; + messageCount +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L35">            return true;</span>
+        }
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (!(o instanceof MissedMessageCount)) {</span>
+<span class="nc" id="L38">            return false;</span>
+        }
+<span class="fc" id="L40">        MissedMessageCount count = (MissedMessageCount) o;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        return messageCount == count.messageCount &amp;&amp;</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            queueName.equals(count.queueName);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L47">        return Objects.hash(queueName, messageCount);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

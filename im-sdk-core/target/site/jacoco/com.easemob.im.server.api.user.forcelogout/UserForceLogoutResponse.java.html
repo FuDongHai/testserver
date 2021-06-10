@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserForceLogoutResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.user.forcelogout</a> &gt; <span class="el_source">UserForceLogoutResponse.java</span></div><h1>UserForceLogoutResponse.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.user.forcelogout;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UserForceLogoutResponse {
+    @JsonProperty(&quot;data&quot;)
+    private UserForceLogoutResultResource resultResource;
+
+    @JsonCreator
+<span class="fc" id="L11">    public UserForceLogoutResponse(@JsonProperty(&quot;data&quot;) UserForceLogoutResultResource resultResource) {</span>
+<span class="fc" id="L12">        this.resultResource = resultResource;</span>
+<span class="fc" id="L13">    }</span>
+
+    public boolean isSuccessful() {
+<span class="fc" id="L16">        return this.resultResource.result;</span>
+    }
+
+    private static class UserForceLogoutResultResource {
+        @JsonProperty(&quot;result&quot;)
+        private boolean result;
+
+        @JsonCreator
+<span class="fc" id="L24">        public UserForceLogoutResultResource(@JsonProperty(&quot;result&quot;) boolean result) {</span>
+<span class="fc" id="L25">            this.result = result;</span>
+<span class="fc" id="L26">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

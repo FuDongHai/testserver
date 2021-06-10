@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListRooms.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.room.list</a> &gt; <span class="el_source">ListRooms.java</span></div><h1>ListRooms.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.room.list;
+
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.model.EMPage;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+public class ListRooms {
+    
+    private Context context;
+
+<span class="fc" id="L12">    public ListRooms(Context context) {</span>
+<span class="fc" id="L13">        this.context = context;</span>
+<span class="fc" id="L14">    }</span>
+
+    public Flux&lt;String&gt; all(int limit) {
+<span class="fc" id="L17">        return next(limit, null)</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">                .expand(rsp -&gt; rsp.getCursor() == null ? Mono.empty() : next(limit, rsp.getCursor()))</span>
+<span class="fc" id="L19">                .concatMapIterable(EMPage::getValues);</span>
+    }
+
+    public Mono&lt;EMPage&lt;String&gt;&gt; next(int limit, String cursor) {
+<span class="fc" id="L23">        String uri = String.format(&quot;/chatrooms?limit=%d&quot;, limit);</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (cursor != null) {</span>
+<span class="fc" id="L25">            uri += String.format(&quot;&amp;cursor=%s&quot;, cursor);</span>
+        }
+<span class="fc" id="L27">        String finalUri = uri;</span>
+<span class="fc" id="L28">        return this.context.getHttpClient()</span>
+<span class="fc" id="L29">                .flatMap(httpClient -&gt; httpClient.get()</span>
+<span class="fc" id="L30">                        .uri(finalUri)</span>
+<span class="fc" id="L31">                        .responseSingle((rsp, buf) -&gt; this.context.getErrorMapper().apply(rsp).then(buf)))</span>
+<span class="fc" id="L32">                .map(buf -&gt; this.context.getCodec().decode(buf, ListRoomsResponse.class))</span>
+<span class="fc" id="L33">                .map(ListRoomsResponse::toEMPage);</span>
+    }
+
+    public Flux&lt;String&gt; userJoined(String username) {
+<span class="fc" id="L37">        return this.context.getHttpClient()</span>
+<span class="fc" id="L38">                .flatMapMany(httpClient -&gt; httpClient.get()</span>
+<span class="fc" id="L39">                        .uri(String.format(&quot;/users/%s/joined_chatrooms&quot;, username))</span>
+<span class="fc" id="L40">                        .responseSingle((rsp, buf) -&gt; this.context.getErrorMapper().apply(rsp).then(buf)))</span>
+<span class="fc" id="L41">                .map(buf -&gt; this.context.getCodec().decode(buf, ListRoomsResponse.class))</span>
+<span class="fc" id="L42">                .flatMapIterable(ListRoomsResponse::getRoomIds);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

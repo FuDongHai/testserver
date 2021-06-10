@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMCustomMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.model</a> &gt; <span class="el_source">EMCustomMessage.java</span></div><h1>EMCustomMessage.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.model;
+
+import java.util.*;
+
+public class EMCustomMessage extends EMMessage {
+    private String customEvent;
+    private Set&lt;EMKeyValue&gt; customExtensions;
+
+    public EMCustomMessage() {
+<span class="fc" id="L10">        super(MessageType.CUSTOM);</span>
+<span class="fc" id="L11">    }</span>
+
+    public String customEvent() {
+<span class="fc" id="L14">        return this.customEvent;</span>
+    }
+
+    public EMCustomMessage customEvent(String customEvent) {
+<span class="fc" id="L18">        this.customEvent = customEvent;</span>
+<span class="fc" id="L19">        return this;</span>
+    }
+
+    public Set&lt;EMKeyValue&gt; customExtensions() {
+<span class="fc" id="L23">        return this.customExtensions;</span>
+    }
+
+    public EMCustomMessage customExtensions(Set&lt;EMKeyValue&gt; customParams) {
+<span class="nc" id="L27">        this.customExtensions = customParams;</span>
+<span class="nc" id="L28">        return this;</span>
+    }
+
+    public EMKeyValue customExtension(String key) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L33">            return null;</span>
+        }
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (EMKeyValue keyValue : this.customExtensions) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            if (keyValue.key().equals(key)) {</span>
+<span class="nc" id="L37">                return keyValue;</span>
+            }
+<span class="nc" id="L39">        }</span>
+<span class="nc" id="L40">        return null;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, boolean value) {
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L45">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="nc" id="L47">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="nc" id="L48">        return this;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, int value) {
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L53">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="nc" id="L55">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="nc" id="L56">        return this;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, long value) {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L61">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="nc" id="L63">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="nc" id="L64">        return this;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, float value) {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L69">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="nc" id="L71">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="nc" id="L72">        return this;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, double value) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="nc" id="L77">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="nc" id="L79">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="nc" id="L80">        return this;</span>
+    }
+
+    public EMCustomMessage customExtension(String key, String value) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (this.customExtensions == null) {</span>
+<span class="fc" id="L85">            this.customExtensions = new HashSet&lt;&gt;();</span>
+        }
+<span class="fc" id="L87">        this.customExtensions.add(EMKeyValue.of(key, value));</span>
+<span class="fc" id="L88">        return this;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc" id="L96">        EMCustomMessage that = (EMCustomMessage) o;</span>
+<span class="nc bnc" id="L97" title="All 4 branches missed.">        return Objects.equals(customEvent, that.customEvent) &amp;&amp; Objects.equals(customExtensions, that.customExtensions);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L102">        return Objects.hash(super.hashCode(), customEvent, customExtensions);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L107">        return &quot;EMCustomMessage{&quot; +</span>
+                &quot;customEvent='&quot; + customEvent + '\'' +
+                &quot;, customParams=&quot; + customExtensions +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

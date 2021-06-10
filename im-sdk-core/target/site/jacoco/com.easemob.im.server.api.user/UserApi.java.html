@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.user</a> &gt; <span class="el_source">UserApi.java</span></div><h1>UserApi.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.user;
+
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.token.Token;
+import com.easemob.im.server.api.user.create.CreateUser;
+import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
+import com.easemob.im.server.api.user.get.UserGet;
+import com.easemob.im.server.api.user.list.ListUsers;
+import com.easemob.im.server.api.user.password.UpdateUserPassword;
+import com.easemob.im.server.api.user.status.UserStatus;
+import com.easemob.im.server.api.user.unregister.DeleteUser;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
+import com.easemob.im.server.model.EMPage;
+import com.easemob.im.server.model.EMUser;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * 用户API。
+ */
+public class UserApi {
+
+    private CreateUser createUser;
+    private DeleteUser deleteUser;
+    private ListUsers listUsers;
+    private UpdateUserPassword updateUserPassword;
+    private ForceLogoutUser forceLogoutUser;
+
+    private UserStatus userStatus;
+
+    private UserGet userGet;
+
+    private Context context;
+
+<span class="nc" id="L35">    public UserApi(Context context) {</span>
+<span class="nc" id="L36">        this.createUser = new CreateUser(context);</span>
+<span class="nc" id="L37">        this.deleteUser = new DeleteUser(context);</span>
+<span class="nc" id="L38">        this.listUsers = new ListUsers(context);</span>
+<span class="nc" id="L39">        this.updateUserPassword = new UpdateUserPassword(context);</span>
+<span class="nc" id="L40">        this.forceLogoutUser = new ForceLogoutUser(context);</span>
+<span class="nc" id="L41">        this.userStatus = new UserStatus(context);</span>
+<span class="nc" id="L42">        this.userGet = new UserGet(context);</span>
+<span class="nc" id="L43">        this.context = context;</span>
+<span class="nc" id="L44">    }</span>
+
+
+    /**
+     * 创建用户。
+     *
+     * @param username 用户名，可以包含小写字母、数字、减号，有效长度1至32个字节
+     * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;amp;*-_=+&amp;lt;&amp;gt;;:,./?)，有效长度1至32字节
+     * @return A {@code Mono}
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E6%B3%A8%E5%86%8C%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7_%E6%8E%88%E6%9D%83&quot;&gt;注册用户&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; create(String username, String password) {
+        try {
+<span class="nc" id="L57">            EMUser.validateUsername(username);</span>
+<span class="nc" id="L58">            EMUser.validatePassword(password);</span>
+<span class="nc" id="L59">        } catch (EMInvalidArgumentException e) {</span>
+<span class="nc" id="L60">            return Mono.error(e);</span>
+<span class="nc" id="L61">        }</span>
+<span class="nc" id="L62">        return this.createUser.single(username, password);</span>
+    }
+
+    /**
+     * 删除用户。
+     *
+     * @param username 要删除的用户的用户名
+     * @return 成功或失败
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E5%88%A0%E9%99%A4%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7&quot;&gt;删除用户&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; delete(String username) {
+<span class="nc" id="L73">        return this.deleteUser.single(username);</span>
+    }
+
+    /**
+     * 获取全部用户。
+     *
+     * @return 用户名或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7&quot;&gt;获取用户列表&lt;/a&gt;
+     */
+    public Flux&lt;String&gt; listAllUsers() {
+<span class="nc" id="L83">        return this.listUsers.all(20);</span>
+    }
+
+    /**
+     * 分页获取用户列表。
+     *
+     * @param limit 返回多少用户
+     * @param cursor 开始位置
+     * @return 获取用户响应或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7&quot;&gt;获取用户列表&lt;/a&gt;
+     * @see com.easemob.im.server.model.EMPage
+     */
+    public Mono&lt;EMPage&lt;String&gt;&gt; listUsers(int limit, String cursor) {
+<span class="nc" id="L96">        return this.listUsers.next(limit, cursor);</span>
+    }
+
+    /**
+     * 删除全部用户。
+     *
+     * @return 删除的每个用户名或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7&quot;&gt;删除全部用户&lt;/a&gt;
+     */
+    public Flux&lt;String&gt; deleteAll() {
+<span class="nc" id="L106">        return this.deleteUser.all(20);</span>
+    }
+
+    /**
+     * 获取用户详情。
+     *
+     * @param username 用户名
+     * @return A {@code Mono} emits {@code EMUser} on success.
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7&quot;&gt;获取用户详情&lt;/a&gt;
+     */
+    public Mono&lt;EMUser&gt; get(String username) {
+<span class="nc" id="L117">        return this.userGet.single(username);</span>
+    }
+
+    /**
+     * 修改用户密码。
+     *
+     * @param username 要修改的用户的用户名
+     * @param password 新密码
+     * @return 成功或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81&quot;&gt;修改用户密码&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; updateUserPassword(String username, String password) {
+        try {
+<span class="nc" id="L130">            EMUser.validatePassword(password);</span>
+<span class="nc" id="L131">        } catch (EMInvalidArgumentException e) {</span>
+<span class="nc" id="L132">            return Mono.error(e);</span>
+<span class="nc" id="L133">        }</span>
+
+<span class="nc" id="L135">        return this.updateUserPassword.update(username, password);</span>
+    }
+
+    /**
+     * 强制指定用户所有设备下线。
+     *
+     * @param username 要强制下线的用户的用户名
+     * @return 成功或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E5%BC%BA%E5%88%B6%E4%B8%8B%E7%BA%BF&quot;&gt;强制下线&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; forceLogoutAllDevices(String username) {
+<span class="nc" id="L146">        return this.forceLogoutUser.byUsername(username);</span>
+    }
+
+    /**
+     * 强制指定用户指定设备下线。
+     *
+     * TODO: 增加查询用户在线设备id的API
+     *
+     * @param username 要强制下线的用户的用户名
+     * @param resource 要强制下线的设备id，获取设备id的方法待补充
+     * @return 成功或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E5%BC%BA%E5%88%B6%E4%B8%8B%E7%BA%BF&quot;&gt;强制下线&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; forceLogoutOneDevice(String username, String resource) {
+<span class="nc" id="L160">        return this.forceLogoutUser.byUsernameAndResource(username, resource);</span>
+    }
+
+    /**
+     * 获取用户在线状态。
+     * @param username 要查询的用户的用户名
+     * @return 是否在线或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81&quot;&gt;获取用户在线状态&lt;/a&gt;
+     */
+    public Mono&lt;Boolean&gt; isUserOnline(String username) {
+<span class="nc" id="L170">        return this.userStatus.isUserOnline(username);</span>
+    }
+
+    /**
+     * 获取用户token。
+     * @param username 要获取token的用户名
+     * @param password 要获取token的用户名密码
+     * @return 返回token或失败
+     */
+    public Mono&lt;Token&gt; getToken(String username, String password) {
+<span class="nc" id="L180">        return this.context.getTokenProvider().fetchUserToken(username, password);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

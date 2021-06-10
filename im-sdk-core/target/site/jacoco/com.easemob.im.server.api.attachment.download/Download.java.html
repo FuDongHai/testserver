@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Download.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.attachment.download</a> &gt; <span class="el_source">Download.java</span></div><h1>Download.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.attachment.download;
+
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.util.FileSystem;
+import reactor.core.publisher.Mono;
+
+import java.io.OutputStream;
+import java.nio.file.Path;
+
+public class Download {
+
+    private Context context;
+
+<span class="nc" id="L14">    public Download(Context context) {</span>
+<span class="nc" id="L15">        this.context = context;</span>
+<span class="nc" id="L16">    }</span>
+
+    public Mono&lt;Path&gt; toLocalFile(String id, Path dir, String filename) {
+<span class="nc" id="L19">        Path local = FileSystem.choosePath(dir, filename);</span>
+<span class="nc" id="L20">        return Mono.&lt;OutputStream&gt;create(sink -&gt; sink.success(FileSystem.open(local)))</span>
+<span class="nc" id="L21">                .flatMap(out -&gt; this.context.getHttpClient()</span>
+<span class="nc" id="L22">                        .flatMap(httpClient -&gt; httpClient.get()</span>
+<span class="nc" id="L23">                                .uri(String.format(&quot;/chatfiles/%s&quot;, id))</span>
+<span class="nc" id="L24">                                .response((rsp, buf) -&gt; this.context.getErrorMapper().apply(rsp).thenMany(buf))</span>
+<span class="nc" id="L25">                                .doOnNext(buf -&gt; FileSystem.append(out, buf))</span>
+<span class="nc" id="L26">                                .doFinally(sig -&gt; FileSystem.close(out))</span>
+<span class="nc" id="L27">                                .then()))</span>
+<span class="nc" id="L28">                .thenReturn(local);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

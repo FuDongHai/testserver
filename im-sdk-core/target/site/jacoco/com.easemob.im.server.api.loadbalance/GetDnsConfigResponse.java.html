@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetDnsConfigResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.loadbalance</a> &gt; <span class="el_source">GetDnsConfigResponse.java</span></div><h1>GetDnsConfigResponse.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.loadbalance;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class GetDnsConfigResponse {
+    @JsonProperty(&quot;deploy_name&quot;)
+    private String name;
+    @JsonProperty(&quot;file_version&quot;)
+    private String version;
+    @JsonProperty(&quot;rest&quot;)
+    private Service service;
+
+    @JsonCreator
+    public GetDnsConfigResponse(@JsonProperty(&quot;deploy_name&quot;) String name,
+                                @JsonProperty(&quot;file_version&quot;) String version,
+<span class="fc" id="L20">                                @JsonProperty(&quot;rest&quot;) Service service) {</span>
+<span class="fc" id="L21">        this.name = name;</span>
+<span class="fc" id="L22">        this.version = version;</span>
+<span class="fc" id="L23">        this.service = service;</span>
+<span class="fc" id="L24">    }</span>
+
+    public List&lt;Endpoint&gt; toEndpoints() {
+<span class="fc" id="L27">        return this.service.toEndpoints();</span>
+    }
+
+    public static class Service {
+        @JsonProperty(&quot;hosts&quot;)
+        private List&lt;ServiceRecord&gt; records;
+
+<span class="fc" id="L34">        public Service(@JsonProperty(&quot;hosts&quot;) List&lt;ServiceRecord&gt; records) {</span>
+<span class="fc" id="L35">            this.records = records;</span>
+<span class="fc" id="L36">        }</span>
+
+        public List&lt;Endpoint&gt; toEndpoints() {
+<span class="fc" id="L39">            return this.records.stream()</span>
+<span class="fc" id="L40">                    .map(ServiceRecord::toEndpoint)</span>
+<span class="fc" id="L41">                    .collect(Collectors.toList());</span>
+        }
+    }
+
+    public static class ServiceRecord {
+        @JsonProperty(&quot;protocol&quot;)
+        private String protocol;
+        @JsonProperty(&quot;domain&quot;)
+        private String domainName;
+        @JsonProperty(&quot;ip&quot;)
+        private String ip;
+        @JsonProperty(&quot;port&quot;)
+        private int port;
+
+        public ServiceRecord(@JsonProperty(&quot;protocol&quot;) String protocol,
+                        @JsonProperty(&quot;domain&quot;) String domainName,
+                        @JsonProperty(&quot;ip&quot;) String ip,
+<span class="fc" id="L58">                        @JsonProperty(&quot;port&quot;) int port) {</span>
+<span class="fc" id="L59">            this.protocol = protocol;</span>
+<span class="fc" id="L60">            this.domainName = domainName;</span>
+<span class="fc" id="L61">            this.ip = ip;</span>
+<span class="fc" id="L62">            this.port = port;</span>
+<span class="fc" id="L63">        }</span>
+
+        public Endpoint toEndpoint() {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (this.domainName != null) {</span>
+<span class="fc" id="L67">                return new Endpoint(this.protocol, this.domainName, this.port);</span>
+            }
+<span class="fc" id="L69">            return new Endpoint(this.protocol, this.ip, this.port);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

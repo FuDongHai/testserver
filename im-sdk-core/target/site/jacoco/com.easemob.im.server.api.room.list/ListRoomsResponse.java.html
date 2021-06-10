@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListRoomsResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.room.list</a> &gt; <span class="el_source">ListRoomsResponse.java</span></div><h1>ListRoomsResponse.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.room.list;
+
+import com.easemob.im.server.model.EMPage;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ListRoomsResponse {
+
+    @JsonProperty(&quot;data&quot;)
+    private List&lt;Room&gt; rooms;
+
+    @JsonProperty(&quot;cursor&quot;)
+    private String cursor;
+
+    public static class Room {
+        @JsonProperty(&quot;id&quot;)
+        private String id;
+        @JsonProperty(&quot;name&quot;)
+        private String name;
+        @JsonProperty(&quot;owner&quot;)
+        private String owner;
+        @JsonProperty(&quot;affiliations_count&quot;)
+        private int members;
+
+        @JsonCreator
+        public Room(@JsonProperty(&quot;id&quot;) String id,
+                    @JsonProperty(&quot;name&quot;) String name,
+                    @JsonProperty(&quot;owner&quot;) String owner,
+<span class="fc" id="L32">                    @JsonProperty(&quot;affiliations_count&quot;) int members) {</span>
+<span class="fc" id="L33">            this.id = id;</span>
+<span class="fc" id="L34">            this.name = name;</span>
+<span class="fc" id="L35">            this.owner = owner;</span>
+<span class="fc" id="L36">            this.members = members;</span>
+<span class="fc" id="L37">        }</span>
+
+        public String getId() {
+<span class="fc" id="L40">            return this.id;</span>
+        }
+
+        public String getName() {
+<span class="nc" id="L44">            return this.name;</span>
+        }
+
+        public String getOwner() {
+<span class="nc" id="L48">            return this.owner;</span>
+        }
+
+        public int getMembers() {
+<span class="nc" id="L52">            return this.members;</span>
+        }
+
+    }
+
+    public List&lt;String&gt; getRoomIds() {
+<span class="fc" id="L58">        return this.rooms.stream().map(Room::getId).collect(Collectors.toList());</span>
+    }
+
+    public String getCursor() {
+<span class="nc" id="L62">        return this.cursor;</span>
+    }
+
+    public EMPage&lt;String&gt; toEMPage() {
+<span class="fc" id="L66">        List&lt;String&gt; roomIds = this.rooms.stream().map(Room::getId).collect(Collectors.toList());</span>
+<span class="fc" id="L67">        return new EMPage&lt;&gt;(roomIds, this.cursor);</span>
+    }
+
+    @JsonCreator
+<span class="fc" id="L71">    public ListRoomsResponse(@JsonProperty(&quot;data&quot;) List&lt;Room&gt; rooms) {</span>
+<span class="fc" id="L72">        this.rooms = rooms;</span>
+<span class="fc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

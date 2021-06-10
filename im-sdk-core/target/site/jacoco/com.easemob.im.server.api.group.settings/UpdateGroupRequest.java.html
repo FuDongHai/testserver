@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateGroupRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.group.settings</a> &gt; <span class="el_source">UpdateGroupRequest.java</span></div><h1>UpdateGroupRequest.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.group.settings;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UpdateGroupRequest {
+
+    @JsonProperty(&quot;name&quot;)
+    private String name;
+
+    @JsonProperty(&quot;description&quot;)
+    private String description;
+
+    @JsonProperty(&quot;allowinvites&quot;)
+    private Boolean canMemberInviteOthers;
+
+    @JsonProperty(&quot;membersonly&quot;)
+    private Boolean needApproveToJoin;
+
+    @JsonProperty(&quot;maxusers&quot;)
+    private Integer maxMembers;
+
+<span class="fc" id="L23">    public UpdateGroupRequest() {</span>
+<span class="fc" id="L24">        this.name = null;</span>
+<span class="fc" id="L25">        this.description = null;</span>
+<span class="fc" id="L26">        this.canMemberInviteOthers = null;</span>
+<span class="fc" id="L27">        this.needApproveToJoin = null;</span>
+<span class="fc" id="L28">        this.maxMembers = null;</span>
+<span class="fc" id="L29">    }</span>
+
+    @JsonCreator
+    public UpdateGroupRequest(@JsonProperty(&quot;name&quot;) String name,
+                              @JsonProperty(&quot;description&quot;) String description,
+                              @JsonProperty(&quot;allowinvites&quot;) Boolean canMemberInviteOthers,
+                              @JsonProperty(&quot;membersonly&quot;) Boolean needApproveToJoin,
+<span class="nc" id="L36">                              @JsonProperty(&quot;maxusers&quot;) Integer maxMembers) {</span>
+<span class="nc" id="L37">        this.name = name;</span>
+<span class="nc" id="L38">        this.description = description;</span>
+<span class="nc" id="L39">        this.canMemberInviteOthers = canMemberInviteOthers;</span>
+<span class="nc" id="L40">        this.needApproveToJoin = needApproveToJoin;</span>
+<span class="nc" id="L41">        this.maxMembers = maxMembers;</span>
+<span class="nc" id="L42">    }</span>
+
+    public UpdateGroupRequest setName(String name) {
+<span class="nc" id="L45">        this.name = name;</span>
+<span class="nc" id="L46">        return this;</span>
+    }
+
+    public UpdateGroupRequest setDescription(String description) {
+<span class="nc" id="L50">        this.description = description;</span>
+<span class="nc" id="L51">        return this;</span>
+    }
+
+    public UpdateGroupRequest setCanMemberInviteOthers(Boolean canMemberInviteOthers) {
+<span class="fc" id="L55">        this.canMemberInviteOthers = canMemberInviteOthers;</span>
+<span class="fc" id="L56">        return this;</span>
+    }
+
+    public UpdateGroupRequest setNeedApproveToJoin(Boolean needApproveToJoin) {
+<span class="nc" id="L60">        this.needApproveToJoin = needApproveToJoin;</span>
+<span class="nc" id="L61">        return this;</span>
+    }
+
+    public UpdateGroupRequest setMaxMembers(Integer maxMembers) {
+<span class="fc" id="L65">        this.maxMembers = maxMembers;</span>
+<span class="fc" id="L66">        return this;</span>
+    }
+
+    public String getName() {
+<span class="fc" id="L70">        return name;</span>
+    }
+
+    public String getDescription() {
+<span class="fc" id="L74">        return description;</span>
+    }
+
+    public Boolean getCanMemberInviteOthers() {
+<span class="fc" id="L78">        return canMemberInviteOthers;</span>
+    }
+
+    public Boolean getNeedApproveToJoin() {
+<span class="fc" id="L82">        return needApproveToJoin;</span>
+    }
+
+    public Integer getMaxMembers() {
+<span class="fc" id="L86">        return maxMembers;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

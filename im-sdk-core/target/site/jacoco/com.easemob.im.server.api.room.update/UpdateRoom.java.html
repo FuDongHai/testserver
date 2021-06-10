@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateRoom.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.room.update</a> &gt; <span class="el_source">UpdateRoom.java</span></div><h1>UpdateRoom.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.room.update;
+
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.exception.EMUnknownException;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class UpdateRoom {
+    
+    private Context context;
+
+<span class="fc" id="L15">    public UpdateRoom(Context context) {</span>
+<span class="fc" id="L16">        this.context = context;</span>
+<span class="fc" id="L17">    }</span>
+
+    public Mono&lt;Void&gt; byId(String id, Consumer&lt;UpdateRoomRequest&gt; customizer) {
+<span class="fc" id="L20">        UpdateRoomRequest request = new UpdateRoomRequest();</span>
+<span class="fc" id="L21">        customizer.accept(request);</span>
+
+<span class="fc" id="L23">        return this.context.getHttpClient()</span>
+<span class="fc" id="L24">                .flatMap(httpClient -&gt; httpClient.put()</span>
+<span class="fc" id="L25">                            .uri(String.format(&quot;/chatrooms/%s&quot;, id))</span>
+<span class="fc" id="L26">                            .send(Mono.create(sink -&gt; sink.success(this.context.getCodec().encode(request))))</span>
+<span class="fc" id="L27">                            .responseSingle((rsp, buf) -&gt; this.context.getErrorMapper().apply(rsp).then(buf)))</span>
+<span class="fc" id="L28">                .map(buf -&gt; this.context.getCodec().decode(buf, UpdateRoomResponse.class))</span>
+<span class="fc" id="L29">                .handle((rsp, sink) -&gt; {</span>
+<span class="fc" id="L30">                    List&lt;String&gt; notUpdated = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">                    if (request.hasName() &amp;&amp; !rsp.nameUpdated()) {</span>
+<span class="nc" id="L32">                        notUpdated.add(&quot;name&quot;);</span>
+                    }
+<span class="pc bpc" id="L34" title="3 of 4 branches missed.">                    if (request.hasDescription() &amp;&amp; !rsp.descriptionUpdated()) {</span>
+<span class="nc" id="L35">                        notUpdated.add(&quot;description&quot;);</span>
+                    }
+<span class="pc bpc" id="L37" title="1 of 4 branches missed.">                    if (request.hasMaxMembers() &amp;&amp; !rsp.maxMembersUpdated()) {</span>
+<span class="fc" id="L38">                        notUpdated.add(&quot;maxMembers&quot;);</span>
+                    }
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                    if (!notUpdated.isEmpty()) {</span>
+<span class="fc" id="L41">                        sink.error(new EMUnknownException(String.format(&quot;%s not updated&quot;, String.join(&quot;,&quot;, notUpdated))));</span>
+<span class="fc" id="L42">                        return;</span>
+                    }
+<span class="fc" id="L44">                    sink.complete();</span>
+<span class="fc" id="L45">                });</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

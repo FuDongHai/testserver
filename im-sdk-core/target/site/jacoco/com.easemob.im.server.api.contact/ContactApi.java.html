@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContactApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.contact</a> &gt; <span class="el_source">ContactApi.java</span></div><h1>ContactApi.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.contact;
+
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.contact.user.ContactUser;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * 通讯录API。
+ */
+public class ContactApi {
+    
+    private ContactUser contactUser;
+
+<span class="nc" id="L15">    public ContactApi(Context context) {</span>
+<span class="nc" id="L16">        this.contactUser = new ContactUser(context);</span>
+<span class="nc" id="L17">    }</span>
+
+    /**
+     * 向用户通讯录添加联系人。
+     *
+     * @param user 所属用户的用户名
+     * @param contact 联系人的用户名
+     *
+     * @return 成功或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E6%B7%BB%E5%8A%A0%E5%A5%BD%E5%8F%8B&quot;&gt;添加联系人&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; add(String user, String contact) {
+<span class="nc" id="L29">        return this.contactUser.add(user, contact);</span>
+    }
+
+    /**
+     * 从用户通讯录移除联系人
+     *
+     * @param user 所属用户的用户名
+     * @param contact 联系人的用户名
+     *
+     * @return 成功或错误
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E7%A7%BB%E9%99%A4%E5%A5%BD%E5%8F%8B&quot;&gt;移除联系人&lt;/a&gt;
+     */
+    public Mono&lt;Void&gt; remove(String user, String contact) {
+<span class="nc" id="L42">        return this.contactUser.remove(user, contact);</span>
+    }
+
+    /**
+     * 获取用户联系人列表。
+     *
+     * @param user 所属用户的用户名
+     * @return 每个联系人的用户名
+     * @see &lt;a href=&quot;http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8&quot;&gt;获取联系人列表&lt;/a&gt;
+     */
+    public Flux&lt;String&gt; list(String user) {
+<span class="nc" id="L53">        return this.contactUser.list(user);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

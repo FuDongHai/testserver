@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server</a> &gt; <span class="el_source">EMProperties.java</span></div><h1>EMProperties.java</h1><pre class="source lang-java linenums">package com.easemob.im.server;
+
+import com.easemob.im.server.api.util.Sensitive;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
+import com.easemob.im.server.exception.EMInvalidStateException;
+import com.easemob.im.server.exception.EMUnsupportedEncodingException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+
+/**
+ * Server SDK配置类
+ */
+public class EMProperties {
+    private final String baseUri;
+    private final String appkey;
+    private final String clientId;
+    private final String clientSecret;
+
+    private final int httpConnectionPoolSize;
+    private final String serverTimezone;
+
+    public static Builder builder() {
+<span class="fc" id="L25">        return new Builder();</span>
+    }
+
+    public String getBaseUri() {
+<span class="fc" id="L29">        return baseUri;</span>
+    }
+
+    public String getAppkey() {
+<span class="fc" id="L33">        return this.appkey;</span>
+    }
+
+    public String getAppkeyUrlEncoded() {
+        try {
+<span class="fc" id="L38">            return URLEncoder.encode(this.appkey, &quot;UTF-8&quot;);</span>
+<span class="nc" id="L39">        } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L40">            throw new EMUnsupportedEncodingException(e.getMessage());</span>
+        }
+    }
+
+    public String getAppkeySlashDelimited() {
+<span class="fc" id="L45">        return this.appkey.replace('#', '/');</span>
+    }
+
+    public String getClientId() {
+<span class="fc" id="L49">        return this.clientId;</span>
+    }
+
+    public String getClientSecret() {
+<span class="fc" id="L53">        return this.clientSecret;</span>
+    }
+
+    public int getHttpConnectionPoolSize() {
+<span class="nc" id="L57">        return this.httpConnectionPoolSize;</span>
+    }
+
+    public String getServerTimezone() {
+<span class="nc" id="L61">        return this.serverTimezone;</span>
+    }
+
+<span class="fc" id="L64">    public EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {</span>
+<span class="fc" id="L65">        this.baseUri = baseUri;</span>
+<span class="fc" id="L66">        this.appkey = appkey;</span>
+<span class="fc" id="L67">        this.clientId = clientId;</span>
+<span class="fc" id="L68">        this.clientSecret = clientSecret;</span>
+<span class="fc" id="L69">        this.httpConnectionPoolSize = httpConnectionPoolSize;</span>
+<span class="fc" id="L70">        this.serverTimezone = serverTimezone;</span>
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L75">        return &quot;EMProperties{&quot; +</span>
+                &quot;baseUri='&quot; + baseUri + '\'' +
+                &quot;, appkey='&quot; + appkey + '\'' +
+                &quot;, clientId='&quot; + clientId + '\'' +
+                &quot;, clientSecret='&quot; + clientSecret + '\'' +
+                &quot;, httpConnectionPoolSize=&quot; + httpConnectionPoolSize +
+                &quot;, serverTimezone='&quot; + serverTimezone + '\'' +
+                '}';
+    }
+
+<span class="fc" id="L85">    public static class Builder {</span>
+        private String baseUri;
+        private String appkey;
+        private String clientId;
+        private String clientSecret;
+        private Path downloadDir;
+<span class="fc" id="L91">        private int httpConnectionPoolSize = 10;</span>
+<span class="fc" id="L92">        private String serverTimezone = &quot;+8&quot;;</span>
+
+        /**
+         * 设置rest服务域名。
+         * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务的baseUri。
+         *
+         * @param baseUri baseUri
+         * @return {@code Builder}
+         */
+        public Builder setBaseUri(String baseUri) {
+<span class="fc" id="L102">            this.baseUri = baseUri;</span>
+<span class="fc" id="L103">            return this;</span>
+        }
+
+        /**
+         * 设置Appkey，可以到环信Console查询该值。
+         * @param appkey appkey
+         * @return {@code Builder}
+         */
+        public Builder setAppkey(String appkey) {
+<span class="fc bfc" id="L112" title="All 4 branches covered.">            if (appkey == null || appkey.isEmpty()) {</span>
+<span class="fc" id="L113">                throw new EMInvalidArgumentException(&quot;appkey must not be null or empty&quot;);</span>
+            }
+
+<span class="fc" id="L116">            String[] tokens = appkey.split(&quot;#&quot;);</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">            if (tokens.length != 2) {</span>
+<span class="nc" id="L118">                throw new EMInvalidArgumentException(&quot;appkey must contains #&quot;);</span>
+            }
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            if (tokens[0].isEmpty()) {</span>
+<span class="nc" id="L122">                throw new EMInvalidArgumentException(&quot;appkey must contains {org}&quot;);</span>
+            }
+
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">            if (tokens[1].isEmpty()) {</span>
+<span class="nc" id="L126">                throw new EMInvalidArgumentException(&quot;appkey must contains {app}&quot;);</span>
+            }
+
+<span class="fc" id="L129">            this.appkey = appkey;</span>
+<span class="fc" id="L130">            return this;</span>
+        }
+
+        /**
+         * 设置App认证id。
+         * 该信息应该安全的保存在受信任的环境中。
+         *
+         * @param clientId     认证id
+         * @return {@code Builder}
+         */
+        public Builder setClientId(String clientId) {
+<span class="fc bfc" id="L141" title="All 4 branches covered.">            if (clientId == null || clientId.isEmpty()) {</span>
+<span class="fc" id="L142">                throw new EMInvalidArgumentException(&quot;clientId must not be null or empty&quot;);</span>
+            }
+
+<span class="fc" id="L145">            this.clientId = clientId;</span>
+<span class="fc" id="L146">            return this;</span>
+        }
+
+        /**
+         * 设置App认证secret。
+         * 该信息应该安全的保存在受信任的环境中。
+         *
+         * @param clientSecret 认证密码
+         * @return {@code Builder}
+         */
+        public Builder setClientSecret(String clientSecret) {
+<span class="fc bfc" id="L157" title="All 4 branches covered.">            if (clientSecret == null || clientSecret.isEmpty()) {</span>
+<span class="fc" id="L158">                throw new EMInvalidArgumentException(&quot;clientSecret must not be null or empty&quot;);</span>
+            }
+
+<span class="fc" id="L161">            this.clientSecret = clientSecret;</span>
+<span class="fc" id="L162">            return this;</span>
+        }
+
+        public Builder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (httpConnectionPoolSize &lt; 0) {</span>
+<span class="nc" id="L167">                throw new EMInvalidArgumentException(&quot;httpConnectionPoolSize must not be negative&quot;);</span>
+            }
+
+<span class="nc" id="L170">            this.httpConnectionPoolSize = httpConnectionPoolSize;</span>
+<span class="nc" id="L171">            return this;</span>
+        }
+
+        public Builder setServerTimezone(String timezone) {
+<span class="nc" id="L175">            this.serverTimezone = timezone;</span>
+<span class="nc" id="L176">            return this;</span>
+        }
+
+        /** 构造EMProperties
+         *
+         * @return {@code EMProperties}
+         */
+        public EMProperties build() {
+<span class="fc bfc" id="L184" title="All 2 branches covered.">            if (this.appkey == null) {</span>
+<span class="fc" id="L185">                throw new EMInvalidStateException(&quot;appkey not set&quot;);</span>
+            }
+<span class="fc bfc" id="L187" title="All 2 branches covered.">            if (this.clientId == null) {</span>
+<span class="fc" id="L188">                throw new EMInvalidStateException(&quot;clientId not set&quot;);</span>
+            }
+<span class="fc bfc" id="L190" title="All 2 branches covered.">            if (this.clientSecret == null) {</span>
+<span class="fc" id="L191">                throw new EMInvalidStateException(&quot;clientSecret not set&quot;);</span>
+            }
+
+<span class="fc" id="L194">            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret,</span>
+                    this.httpConnectionPoolSize, this.serverTimezone);
+        }
+
+        @Override
+        public String toString() {
+<span class="nc" id="L200">            return &quot;Builder{&quot; +</span>
+                    &quot;baseUri='&quot; + baseUri + '\'' +
+                    &quot;, appkey='&quot; + appkey + '\'' +
+<span class="nc" id="L203">                    &quot;, clientId='&quot; + Sensitive.mask(clientId) + '\'' +</span>
+<span class="nc" id="L204">                    &quot;, clientSecret='&quot; + Sensitive.mask(clientSecret) + '\'' +</span>
+                    &quot;, downloadDir=&quot; + downloadDir +
+                    &quot;, httpConnectionPoolSize=&quot; + httpConnectionPoolSize +
+                    &quot;, serverTimezone='&quot; + serverTimezone + '\'' +
+                    '}';
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

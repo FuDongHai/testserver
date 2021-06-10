@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SendMessageRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">im-sdk-core</a> &gt; <a href="index.source.html" class="el_package">com.easemob.im.server.api.message.send</a> &gt; <span class="el_source">SendMessageRequest.java</span></div><h1>SendMessageRequest.java</h1><pre class="source lang-java linenums">package com.easemob.im.server.api.message.send;
+
+import com.easemob.im.server.model.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
+public class SendMessageRequest {
+    @JsonProperty(&quot;from&quot;)
+    private String from;
+
+    @JsonProperty(&quot;target_type&quot;)
+    private String targetType;
+
+    /* the server side does not preserve order of targets */
+    @JsonProperty(&quot;target&quot;)
+    private Set&lt;String&gt; targets;
+
+    @JsonProperty(&quot;msg&quot;)
+    private Message message;
+
+    @JsonProperty(&quot;ext&quot;)
+    private Map&lt;String, Object&gt; extensions;
+
+    @JsonCreator
+    public SendMessageRequest(@JsonProperty(&quot;from&quot;) String from,
+                              @JsonProperty(&quot;target_type&quot;) String targetType,
+                              @JsonProperty(&quot;target&quot;) Set&lt;String&gt; targets,
+                              @JsonProperty(&quot;msg&quot;) EMMessage message,
+<span class="fc" id="L37">                              @JsonProperty(&quot;ext&quot;) Map&lt;String, Object&gt; extensions) {</span>
+<span class="fc" id="L38">        this.from = from;</span>
+<span class="fc" id="L39">        this.targetType = targetType;</span>
+<span class="fc" id="L40">        this.targets = targets;</span>
+<span class="fc" id="L41">        this.message = Message.of(message);</span>
+<span class="fc" id="L42">        this.extensions = extensions;</span>
+<span class="fc" id="L43">    }</span>
+
+    public String getFrom() {
+<span class="nc" id="L46">        return this.from;</span>
+    }
+
+    public String getTargetType() {
+<span class="nc" id="L50">        return this.targetType;</span>
+    }
+
+    public Set&lt;String&gt; getTargets() {
+<span class="nc" id="L54">        return this.targets;</span>
+    }
+
+    public Message getMessage() {
+<span class="nc" id="L58">        return this.message;</span>
+    }
+
+    public Set&lt;EMKeyValue&gt; getExtensions() {
+<span class="nc" id="L62">        return populateExtensions(this.extensions);</span>
+    }
+    
+    static class Message {
+        @JsonProperty(&quot;type&quot;)
+        private String type;
+
+        @JsonProperty(&quot;msg&quot;)
+        private String text;
+
+        @JsonProperty(&quot;lng&quot;)
+        private Double longitude;
+
+        @JsonProperty(&quot;lat&quot;)
+        private Double latitude;
+
+        @JsonProperty(&quot;addr&quot;)
+        private String address;
+
+        @JsonProperty(&quot;filename&quot;)
+        private String displayName;
+
+        @JsonProperty(&quot;url&quot;)
+        private String uri;
+
+        @JsonProperty(&quot;secret&quot;)
+        private String secret;
+
+        @JsonProperty(&quot;file_length&quot;)
+        private Integer bytes;
+
+        @JsonProperty(&quot;action&quot;)
+        private String action;
+
+        @JsonProperty(&quot;param&quot;)
+        private Map&lt;String, Object&gt; params;
+
+        @JsonProperty(&quot;length&quot;)
+        private Integer duration;
+
+        @JsonProperty(&quot;size&quot;)
+        private Dimensions dimensions;
+
+        @JsonProperty(&quot;thumb&quot;)
+        private String thumb;
+
+        @JsonProperty(&quot;thumb_secret&quot;)
+        private String thumbSecret;
+
+        @JsonProperty(&quot;customEvent&quot;)
+        private String customEvent;
+
+        @JsonProperty(&quot;customExts&quot;)
+        private Map&lt;String, Object&gt; customExtensions;
+
+        @JsonCreator
+        public Message(@JsonProperty(&quot;type&quot;) String type,
+                       @JsonProperty(&quot;msg&quot;) String text,
+                       @JsonProperty(&quot;lng&quot;) Double longitude,
+                       @JsonProperty(&quot;lat&quot;) Double latitude,
+                       @JsonProperty(&quot;addr&quot;) String address,
+                       @JsonProperty(&quot;filename&quot;) String displayName,
+                       @JsonProperty(&quot;url&quot;) String uri,
+                       @JsonProperty(&quot;secret&quot;) String secretKey,
+                       @JsonProperty(&quot;file_length&quot;) Integer bytes,
+                       @JsonProperty(&quot;action&quot;) String action,
+                       @JsonProperty(&quot;param&quot;) Map&lt;String, Object&gt; params,
+                       @JsonProperty(&quot;length&quot;) Integer duration,
+                       @JsonProperty(&quot;size&quot;) Dimensions dimensions,
+                       @JsonProperty(&quot;customEvent&quot;) String customEvent,
+<span class="nc" id="L132">                       @JsonProperty(&quot;customExts&quot;) Map&lt;String, Object&gt; customExtensions) {</span>
+<span class="nc" id="L133">            this.type = type;</span>
+<span class="nc" id="L134">            this.text = text;</span>
+<span class="nc" id="L135">            this.longitude = longitude;</span>
+<span class="nc" id="L136">            this.latitude = latitude;</span>
+<span class="nc" id="L137">            this.address = address;</span>
+<span class="nc" id="L138">            this.displayName = displayName;</span>
+<span class="nc" id="L139">            this.uri = uri;</span>
+<span class="nc" id="L140">            this.secret = secretKey;</span>
+<span class="nc" id="L141">            this.bytes = bytes;</span>
+<span class="nc" id="L142">            this.action = action;</span>
+<span class="nc" id="L143">            this.params = params;</span>
+<span class="nc" id="L144">            this.duration = duration;</span>
+<span class="nc" id="L145">            this.dimensions = dimensions;</span>
+<span class="nc" id="L146">            this.customEvent = customEvent;</span>
+<span class="nc" id="L147">            this.customExtensions = customExtensions;</span>
+<span class="nc" id="L148">        }</span>
+
+<span class="fc" id="L150">        public Message(String type) {</span>
+<span class="fc" id="L151">            this.type = type;</span>
+<span class="fc" id="L152">        }</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+        public static Message of(EMMessage msg) {
+<span class="pc bpc" id="L156" title="2 of 9 branches missed.">            switch (msg.messageType()) {</span>
+                case TEXT:
+<span class="fc" id="L158">                    return Message.of((EMTextMessage) msg);</span>
+                case IMAGE:
+<span class="fc" id="L160">                    return Message.of((EMImageMessage) msg);</span>
+                case AUDIO:
+<span class="fc" id="L162">                    return Message.of((EMVoiceMessage) msg);</span>
+                case VIDEO:
+<span class="fc" id="L164">                    return Message.of((EMVideoMessage) msg);</span>
+                case LOCATION:
+<span class="fc" id="L166">                    return Message.of((EMLocationMessage) msg);</span>
+                case FILE:
+<span class="nc" id="L168">                    return Message.of((EMFileMessage) msg);</span>
+                case COMMAND:
+<span class="fc" id="L170">                    return Message.of((EMCommandMessage) msg);</span>
+                case CUSTOM:
+<span class="fc" id="L172">                    return Message.of((EMCustomMessage) msg);</span>
+                default:
+<span class="nc" id="L174">                    throw new IllegalArgumentException(String.format(&quot;message type %s not supported&quot;, msg.messageType()));</span>
+            }
+        }
+
+        public static Message of(EMTextMessage msg) {
+<span class="fc" id="L179">            Message send = new Message(&quot;text&quot;);</span>
+<span class="fc" id="L180">            send.text = msg.text();</span>
+<span class="fc" id="L181">            return send;</span>
+        }
+
+        public static Message of(EMImageMessage msg) {
+<span class="fc" id="L185">            Message send = new Message(&quot;img&quot;);</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            send.uri = msg.uri() == null ? null : msg.uri().toString();</span>
+<span class="fc" id="L187">            send.displayName = msg.displayName();</span>
+<span class="fc" id="L188">            send.bytes = msg.bytes();</span>
+<span class="fc" id="L189">            send.secret = msg.secret();</span>
+<span class="pc bpc" id="L190" title="3 of 4 branches missed.">            if (msg.width() != null || msg.height() != null) {</span>
+<span class="fc" id="L191">                send.dimensions = new Dimensions(msg.width(), msg.height());</span>
+            }
+<span class="fc" id="L193">            return send;</span>
+        }
+
+        public static Message of(EMVoiceMessage msg) {
+<span class="fc" id="L197">            Message send = new Message(&quot;audio&quot;);</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            send.uri = msg.uri() == null ? null : msg.uri().toString();</span>
+<span class="fc" id="L199">            send.displayName = msg.displayName();</span>
+<span class="fc" id="L200">            send.bytes = msg.bytes();</span>
+<span class="fc" id="L201">            send.secret = msg.secret();</span>
+<span class="fc" id="L202">            send.duration = msg.duration();</span>
+<span class="fc" id="L203">            return send;</span>
+        }
+
+        public static Message of(EMVideoMessage msg) {
+<span class="fc" id="L207">            Message send = new Message(&quot;video&quot;);</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            send.uri = msg.uri() == null ? null : msg.uri().toString();</span>
+<span class="fc" id="L209">            send.displayName = msg.displayName();</span>
+<span class="fc" id="L210">            send.bytes = msg.bytes();</span>
+<span class="fc" id="L211">            send.secret = msg.secret();</span>
+<span class="fc" id="L212">            send.duration = msg.duration();</span>
+<span class="fc" id="L213">            send.thumb = msg.thumb();</span>
+<span class="fc" id="L214">            send.thumbSecret = msg.thumbSecret();</span>
+<span class="fc" id="L215">            return send;</span>
+        }
+
+        public static Message of(EMLocationMessage msg) {
+<span class="fc" id="L219">            Message send = new Message(&quot;loc&quot;);</span>
+<span class="fc" id="L220">            send.longitude = msg.longitude();</span>
+<span class="fc" id="L221">            send.latitude = msg.latitude();</span>
+<span class="fc" id="L222">            send.address = msg.address();</span>
+<span class="fc" id="L223">            return send;</span>
+        }
+
+        public static Message of(EMFileMessage msg) {
+<span class="nc" id="L227">            Message send = new Message(&quot;file&quot;);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">            send.uri = msg.uri() == null ? null : msg.uri().toString();</span>
+<span class="nc" id="L229">            send.displayName = msg.displayName();</span>
+<span class="nc" id="L230">            send.bytes = msg.bytes();</span>
+<span class="nc" id="L231">            send.secret = msg.secret();</span>
+<span class="nc" id="L232">            return send;</span>
+        }
+
+        public static Message of(EMCommandMessage msg) {
+<span class="fc" id="L236">            Message send = new Message(&quot;cmd&quot;);</span>
+<span class="fc" id="L237">            send.action = msg.action();</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">            if (msg.params() == null) {</span>
+<span class="nc" id="L239">                return send;</span>
+            }
+<span class="fc" id="L241">            send.params = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">            for (EMKeyValue kv : msg.params()) {</span>
+<span class="pc bpc" id="L243" title="8 of 9 branches missed.">                switch (kv.type()) {</span>
+                    case BOOL:
+<span class="nc" id="L245">                        send.params.put(kv.key(), kv.asBoolean());</span>
+<span class="nc" id="L246">                        break;</span>
+                    case INT:
+<span class="nc" id="L248">                        send.params.put(kv.key(), kv.asInt());</span>
+<span class="nc" id="L249">                        break;</span>
+                    case UINT:
+<span class="nc" id="L251">                        send.params.put(kv.key(), kv.asLong());</span>
+<span class="nc" id="L252">                        break;</span>
+                    case LLINT:
+<span class="nc" id="L254">                        send.params.put(kv.key(), kv.asLong());</span>
+<span class="nc" id="L255">                        break;</span>
+                    case FLOAT:
+<span class="nc" id="L257">                        send.params.put(kv.key(), kv.asFloat());</span>
+<span class="nc" id="L258">                        break;</span>
+                    case DOUBLE:
+<span class="nc" id="L260">                        send.params.put(kv.key(), kv.asDouble());</span>
+<span class="nc" id="L261">                        break;</span>
+                    case STRING:
+<span class="fc" id="L263">                        send.params.put(kv.key(), kv.asString());</span>
+<span class="fc" id="L264">                        break;</span>
+                    case JSON_STRING:
+<span class="nc" id="L266">                        send.params.put(kv.key(), kv.asString());</span>
+                        break;
+                }
+<span class="fc" id="L269">            }</span>
+<span class="fc" id="L270">            return send;</span>
+        }
+
+        public static Message of(EMCustomMessage msg) {
+<span class="fc" id="L274">            Message send = new Message(&quot;custom&quot;);</span>
+<span class="fc" id="L275">            send.customEvent = msg.customEvent();</span>
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">            if (msg.customExtensions() == null) {</span>
+<span class="nc" id="L277">                return send;</span>
+            }
+<span class="fc" id="L279">            send.customExtensions = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            for (EMKeyValue kv : msg.customExtensions()) {</span>
+<span class="pc bpc" id="L281" title="8 of 9 branches missed.">                switch (kv.type()) {</span>
+                    case BOOL:
+<span class="nc" id="L283">                        send.customExtensions.put(kv.key(), kv.asBoolean());</span>
+<span class="nc" id="L284">                        break;</span>
+                    case INT:
+<span class="nc" id="L286">                        send.customExtensions.put(kv.key(), kv.asInt());</span>
+<span class="nc" id="L287">                        break;</span>
+                    case UINT:
+<span class="nc" id="L289">                        send.customExtensions.put(kv.key(), kv.asLong());</span>
+<span class="nc" id="L290">                        break;</span>
+                    case LLINT:
+<span class="nc" id="L292">                        send.customExtensions.put(kv.key(), kv.asLong());</span>
+<span class="nc" id="L293">                        break;</span>
+                    case FLOAT:
+<span class="nc" id="L295">                        send.customExtensions.put(kv.key(), kv.asFloat());</span>
+<span class="nc" id="L296">                        break;</span>
+                    case DOUBLE:
+<span class="nc" id="L298">                        send.customExtensions.put(kv.key(), kv.asDouble());</span>
+<span class="nc" id="L299">                        break;</span>
+                    case STRING:
+<span class="fc" id="L301">                        send.customExtensions.put(kv.key(), kv.asString());</span>
+<span class="fc" id="L302">                        break;</span>
+                    case JSON_STRING:
+<span class="nc" id="L304">                        send.customExtensions.put(kv.key(), kv.asString());</span>
+                        break;
+                }
+<span class="fc" id="L307">            }</span>
+<span class="fc" id="L308">            return send;</span>
+        }
+    }
+
+    static class Dimensions {
+        @JsonProperty(&quot;width&quot;)
+        private Double width;
+        @JsonProperty(&quot;height&quot;)
+        private Double height;
+
+        public Double getWidth() {
+<span class="fc" id="L319">            return this.width;</span>
+        }
+
+        public Double getHeight() {
+<span class="fc" id="L323">            return this.height;</span>
+        }
+
+        @JsonCreator
+        public Dimensions(@JsonProperty(&quot;width&quot;) Double width,
+<span class="fc" id="L328">                          @JsonProperty(&quot;height&quot;) Double height) {</span>
+<span class="fc" id="L329">            this.width = width;</span>
+<span class="fc" id="L330">            this.height = height;</span>
+<span class="fc" id="L331">        }</span>
+    }
+
+    public static Map&lt;String, Object&gt; parseExtensions(Set&lt;EMKeyValue&gt; extensions) {
+<span class="pc bpc" id="L335" title="2 of 4 branches missed.">        if (extensions == null || extensions.isEmpty()) {</span>
+<span class="nc" id="L336">            return null;</span>
+        }
+<span class="fc" id="L338">        Map&lt;String, Object&gt; mapped = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L339" title="All 2 branches covered.">        for (EMKeyValue keyValue : extensions) {</span>
+<span class="pc bpc" id="L340" title="8 of 9 branches missed.">            switch (keyValue.type()) {</span>
+                case BOOL:
+<span class="nc" id="L342">                    mapped.put(keyValue.key(), keyValue.asBoolean());</span>
+<span class="nc" id="L343">                    break;</span>
+                case INT:
+<span class="fc" id="L345">                    mapped.put(keyValue.key(), keyValue.asInt());</span>
+<span class="fc" id="L346">                    break;</span>
+                case UINT:
+<span class="nc" id="L348">                    mapped.put(keyValue.key(), keyValue.asLong());</span>
+<span class="nc" id="L349">                    break;</span>
+                case LLINT:
+<span class="nc" id="L351">                    mapped.put(keyValue.key(), keyValue.asLong());</span>
+<span class="nc" id="L352">                    break;</span>
+                case FLOAT:
+<span class="nc" id="L354">                    mapped.put(keyValue.key(), keyValue.asFloat());</span>
+<span class="nc" id="L355">                    break;</span>
+                case DOUBLE:
+<span class="nc" id="L357">                    mapped.put(keyValue.key(), keyValue.asDouble());</span>
+<span class="nc" id="L358">                    break;</span>
+                case STRING:
+<span class="nc" id="L360">                    mapped.put(keyValue.key(), keyValue.asString());</span>
+<span class="nc" id="L361">                    break;</span>
+                case JSON_STRING:
+<span class="nc" id="L363">                    mapped.put(keyValue.key(), keyValue.asString());</span>
+                    break;
+            }
+<span class="fc" id="L366">        }</span>
+<span class="fc" id="L367">        return mapped;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Set&lt;EMKeyValue&gt; populateExtensions(Map&lt;String, Object&gt; extensions) {
+<span class="nc bnc" id="L372" title="All 4 branches missed.">        if (extensions == null || extensions.isEmpty()) {</span>
+<span class="nc" id="L373">            return null;</span>
+        }
+<span class="nc" id="L375">        Set&lt;EMKeyValue&gt; mapped = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        for (String key : extensions.keySet()) {</span>
+<span class="nc" id="L377">            Object value = extensions.get(key);</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">            if (value instanceof Boolean) {</span>
+<span class="nc" id="L379">                mapped.add(EMKeyValue.of(key, (boolean) value));</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">            } else if (value instanceof Integer) {</span>
+<span class="nc" id="L381">                mapped.add(EMKeyValue.of(key, (int) value));</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">            } else if (value instanceof Long) {</span>
+<span class="nc" id="L383">                mapped.add(EMKeyValue.of(key, (long) value));</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">            } else if (value instanceof Float) {</span>
+<span class="nc" id="L385">                mapped.add(EMKeyValue.of(key, (float) value));</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">            } else if (value instanceof Double) {</span>
+<span class="nc" id="L387">                mapped.add(EMKeyValue.of(key, (double) value));</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">            } else if (value instanceof String) {</span>
+<span class="nc" id="L389">                mapped.add(EMKeyValue.of(key, (String) value));</span>
+            }
+<span class="nc" id="L391">        }</span>
+<span class="nc" id="L392">        return mapped;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
