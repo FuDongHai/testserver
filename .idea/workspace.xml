@@ -11,6 +11,11 @@
     <execution />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="gh-pages" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1tjsKXfF8TxtKvEPTmdZbJk4M2m" />
@@ -36,11 +41,33 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623293769508</updated>
-      <workItem from="1623293772489" duration="346000" />
+      <workItem from="1623293772489" duration="5603000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1151" height="171" key="GridCell.Tab.0.bottom" timestamp="1623293967081">
+      <screen x="0" y="23" width="1280" height="748" />
+    </state>
+    <state width="1151" height="171" key="GridCell.Tab.0.bottom/0.23.1280.748/1280.23.1920.1057@0.23.1280.748" timestamp="1623293967081" />
+    <state width="1151" height="171" key="GridCell.Tab.0.bottom/0.23.1280.749/1280.23.1920.1057@0.23.1280.749" timestamp="1623293845466" />
+    <state width="1151" height="171" key="GridCell.Tab.0.center" timestamp="1623293967080">
+      <screen x="0" y="23" width="1280" height="748" />
+    </state>
+    <state width="1151" height="171" key="GridCell.Tab.0.center/0.23.1280.748/1280.23.1920.1057@0.23.1280.748" timestamp="1623293967080" />
+    <state width="1151" height="171" key="GridCell.Tab.0.center/0.23.1280.749/1280.23.1920.1057@0.23.1280.749" timestamp="1623293845465" />
+    <state width="1151" height="171" key="GridCell.Tab.0.left" timestamp="1623293967080">
+      <screen x="0" y="23" width="1280" height="748" />
+    </state>
+    <state width="1151" height="171" key="GridCell.Tab.0.left/0.23.1280.748/1280.23.1920.1057@0.23.1280.748" timestamp="1623293967080" />
+    <state width="1151" height="171" key="GridCell.Tab.0.left/0.23.1280.749/1280.23.1920.1057@0.23.1280.749" timestamp="1623293845464" />
+    <state width="1151" height="171" key="GridCell.Tab.0.right" timestamp="1623293967081">
+      <screen x="0" y="23" width="1280" height="748" />
+    </state>
+    <state width="1151" height="171" key="GridCell.Tab.0.right/0.23.1280.748/1280.23.1920.1057@0.23.1280.748" timestamp="1623293967081" />
+    <state width="1151" height="171" key="GridCell.Tab.0.right/0.23.1280.749/1280.23.1920.1057@0.23.1280.749" timestamp="1623293845466" />
   </component>
 </project>
